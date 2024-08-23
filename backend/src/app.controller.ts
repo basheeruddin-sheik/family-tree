@@ -14,7 +14,7 @@ export class AppController {
   }
 
   @Post("llm")
-  async check(@Body("message") message: string) {
+  async check(@Body("description") description: string) {
     try {
       const openai = new OpenAI({
         apiKey: "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",
@@ -46,7 +46,7 @@ export class AppController {
           },
           {
             role: 'user',
-            content: `Create a structured family tree from the following description: ${message}`,
+            content: `Create a structured family tree from the following description: ${description}`,
           },
         ],
         response_format: zodResponseFormat(ResearchPaperExtraction, "research_paper_extraction"),
