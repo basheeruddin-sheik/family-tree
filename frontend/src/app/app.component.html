@@ -1,21 +1,25 @@
-<div id="tree"></div>
-
-<script>
-
-  let family = new FamilyTree("#tree", {
-      // options
-      nodeBinding: {
-          field_0: "name"
-      },
-      nodes: [
-          { id: 1, pids: [2], name: "Amber McKenzie", gender: "female" },
-          { id: 2, pids: [1], name: "Ava Field", gender: "male" },
-          { id: 3, mid: 1, fid: 2, name: "Peter Stevens", gender: "male" }
-      ]  
-  });
-
-
-
-</script> 
-
-<div> helooo0</div>
+<div style="text-align:center" class="content">
+    <h1>
+      Welcome to {{title}}!
+    </h1>
+  </div>
+  <div class="sample">
+      <fam-diagram 
+          [items]="items"
+          [pageFitMode]=PageFitMode.AutoSize
+          [cursorItem]=2
+          [linesWidth]=1
+          [arrowsDirection]=GroupByType.Parents
+          [showExtraArrows]=true
+          [linesColor]="'black'"
+          [normalLevelShift]=20
+          [dotLevelShift]=20
+          [lineLevelShift]=20
+          [normalItemsInterval]=10
+          [dotItemsInterval]=30
+          [lineItemsInterval]=30
+          [hasSelectorCheckbox]=Enabled.False
+          [centerOnCursor]=false>
+      </fam-diagram>
+  </div>
+  <router-outlet></router-outlet>
