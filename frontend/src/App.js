@@ -1,7 +1,7 @@
 
 import './App.css';
 import { FamDiagram } from 'basicprimitivesreact';
-import { PageFitMode, Enabled } from 'basicprimitives';
+import { PageFitMode, Enabled, GroupByType } from 'basicprimitives';
 import { useState } from 'react';
 
 var photos = {
@@ -14,8 +14,10 @@ var photos = {
 };
 
 function App() {
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState('I have two siblings, a brother called Tim and a sister called Grace. My mum is Ada and my dad is Alan. My granddad is called Donald.');
   const [processing, setProcessing] = useState(false);
+
+  const [famDiagramConfig, setFamDiagramConfig] = useState({});
 
   const handler = async () => {
     setProcessing(true);
@@ -29,36 +31,56 @@ function App() {
     const data = await res.json();
 
     console.log(data);
+
+    let items = [];
+    for (let item of data?.tree) {
+      items.push({
+        id: item.node,
+        parents: item.parents,
+        title: item.node,
+        description: item.relationNameWithUser,
+        isActive: false,
+        image: item.gender?.toLowerCase() === "male" ? photos["male"] : item?.gender?.toLowerCase() === "female" ? photos["female"] : photos["unknown"],
+        itemTitleColor: item.node === "You" ? "#ffd11a" : "#4169e1"
+      });
+    }
+
+    setFamDiagramConfig({
+      pageFitMode: PageFitMode.AutoSize,
+      autoSizeMinimum: { width: 100, height: 100 },
+      cursorItem: 2,
+      linesWidth: 1,
+      arrowsDirection: GroupByType.Parents,
+      showExtraArrows: true,
+      linesColor: 'black',
+      normalLevelShift: 20,
+      dotLevelShift: 20,
+      lineLevelShift: 20,
+      normalItemsInterval: 10,
+      dotItemsInterval: 30,
+      lineItemsInterval: 30,
+      hasSelectorCheckbox: Enabled.True,
+      centerOnCursor: true,
+      highlightItem: 0,
+      items
+      // items: [
+      //   { id: 1, parents: [], title: "Donald", description: "Grand Father", isActive: false, image: photos.male },
+      //   { id: 2, parents: [1], title: "Ada", description: "Mother", isActive: false, image: photos.male },
+      //   { id: 3, parents: [], title: "Alan", description: "Father", isActive: false, image: photos.female },
+      //   { id: 4, parents: [2, 3], title: "Tim", description: "Brother", isActive: false, image: photos.male },
+      //   { id: 5, parents: [2, 3], title: "Grace", description: "Sister", isActive: false, image: photos.female },
+      //   { id: 6, parents: [2, 3], title: "You", description: "You", isActive: false, image: photos.unknown, itemTitleColor: "#ffd11a" },
+      // ]
+    })
     setProcessing(false);
   }
-
-
-  const config = {
-    pageFitMode: PageFitMode.AutoSize,
-    autoSizeMinimum: { width: 100, height: 100 },
-    cursorItem: 0,
-    highlightItem: 0,
-    hasSelectorCheckbox: Enabled.True,
-    items: [
-      { id: 1, parents: [], title: "Donald", description: "Grand Father", isActive: false, image: photos.male },
-      { id: 2, parents: [1], title: "Ada", description: "Mother", isActive: false, image: photos.male },
-      { id: 3, parents: [], title: "Alan", description: "Father", isActive: false, image: photos.female },
-      { id: 4, parents: [2, 3], title: "Tim", description: "Brother", isActive: false, image: photos.male },
-      { id: 5, parents: [2, 3], title: "Grace", description: "Sister", isActive: false, image: photos.female },
-      { id: 6, parents: [2, 3], title: "You", description: "You", isActive: false, image: photos.unknown, itemTitleColor: "#ffd11a" },
-      // { id: 7, parents: [6], title: "Grace", description: "Sister", isActive: false, image: photos.female },
-      // { id: 8, parents: [7], title: "Grace", description: "Sister", isActive: false, image: photos.female },
-      // { id: 9, parents: [8], title: "Grace", description: "Sister", isActive: false, image: photos.female }
-    ]
-  };
-
 
   return (
     <div className='flex flex-col justify-center items-center py-5 space-y-8'>
       <h1 className='text-2xl font-bold'>Family Diagram</h1>
       <div className='flex items-center justify-center space-x-3'>
-        <textarea onChange={e => setDescription(e.target.value)} className='border-2 outline-none rounded-lg border-gray-200 hover:border-black p-4' type="text" placeholder="Enter family description" cols="60" rows="5" />
-        <button onClick={handler} className='px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-500 hover:text-white'>Form Tree</button>
+        <textarea value={description} onChange={e => setDescription(e.target.value)} className='border-2 outline-none rounded-lg border-gray-200 hover:border-black p-4' type="text" placeholder="Enter family description" cols="60" rows="4" />
+        <button onClick={handler} className='px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:text-white'>Form Tree</button>
       </div>
 
       {
@@ -68,7 +90,7 @@ function App() {
             <span>Loading...</span>
           </div>
           : <div className="App">
-            <FamDiagram centerOnCursor={true} config={config} />
+            <FamDiagram centerOnCursor={true} config={famDiagramConfig} />
           </div>
       }
 

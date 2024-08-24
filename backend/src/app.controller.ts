@@ -25,8 +25,7 @@ export class AppController {
         tree: z.array(z.object({
           node: z.string(),
           parents: z.array(z.string()),
-          relationDescription: z.string(),
-          // relationStartsWith: z.string(),
+          // relationNameWithUser: z.string(),
           gender: z.string(),
         })),
       });
@@ -36,13 +35,29 @@ export class AppController {
         messages: [
           {
             role: 'system',
-            content: `You are an assistant specialized in generating family trees based on provided textual descriptions. 
-                      Only construct the family tree using the explicit information given, without making any assumptions or adding details not included in the description. 
-                      Start the tree with the highest generation mentioned and work downwards. 
-                      If a relationship or connection is unclear, omit it rather than speculating. Mention 'You' as the person who is requesting the family tree. 
-                      Ensure accuracy and clarity in the tree structure.
-                      If the description includes complex or overlapping relationships, ensure these are presented clearly within the constraints of the information provided.
-                      The goal is to provide a precise and clean visual representation of the family lineage as described.`,
+            content: `
+                You are an assistant specialized in generating family trees based on provided textual descriptions. Follow these guidelines:
+
+                  1. Hierarchy: 
+                    a. Parse the description to identify family members and their relationships.
+                    b. Start the tree with the highest generation mentioned and work downwards to the younger generations.
+                  2. Default Assumptions:
+                    a. If a relationship is described without specifying maternal or paternal sides, assume it is paternal by default.
+                    b. Indicate this assumption in the family tree by placing unspecified relationships on the father's side.
+                  3. Representation:
+                    a. Use 'You' to represent the person requesting the family tree.
+                  4. Handling In-Law Relationships:
+                    a.For any in-law relationship mentioned (e.g., father-in-law, mother-in-law), link these individuals to the corresponding spouse.
+                    b. Specifically:
+                      - Father-in-law and mother-in-law should be linked as the father and mother of the spouse (e.g., David's parents, not "Your" direct parents).
+                    c. Ensure that in-law relationships are not directly linked to "You" but instead to "You"'s spouse.
+                  5. Spousal Relationships:
+                    a. Ensure that any spouse mentioned (e.g., husband or wife) is correctly linked to "You".
+                    b. If the spouse has parents (in-laws), make sure they are linked as the parents of the spouse, not "You".
+                  6. Clarification:
+                    a. If the description is unclear or contradictory, provide feedback and ask for clarification.
+                  
+            `
           },
           {
             role: 'user',
@@ -55,8 +70,7 @@ export class AppController {
       // console.log(JSON.stringify(response, null, 2));
       const familyTree = response.choices[0].message?.parsed;
 
-      console.log("familyTree", response?.choices[0]?.message?.content)
-      return {familyTree}
+      return familyTree;
     } catch (error) {
       console.log("error", error)
     }
