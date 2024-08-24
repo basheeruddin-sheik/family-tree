@@ -25,8 +25,8 @@ export class AppController {
         tree: z.array(z.object({
           node: z.string(),
           parents: z.array(z.string()),
-          // relationNameWithUser: z.string(),
-          gender: z.string(),
+          relationNameWithUser: z.string(),
+          gender: z.string()
         })),
       });
 
@@ -56,7 +56,6 @@ export class AppController {
                     b. If the spouse has parents (in-laws), make sure they are linked as the parents of the spouse, not "You".
                   6. Clarification:
                     a. If the description is unclear or contradictory, provide feedback and ask for clarification.
-                  
             `
           },
           {
