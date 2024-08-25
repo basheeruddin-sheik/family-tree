@@ -14,7 +14,7 @@ var photos = {
 };
 
 function App() {
-  const [description, setDescription] = useState('I have two siblings, a brother called Tim and a sister called Grace. My mum is Ada and my dad is Alan. My granddad is called Donald.');
+  const [description, setDescription] = useState('');
   const [processing, setProcessing] = useState(false);
 
   const [famDiagramConfig, setFamDiagramConfig] = useState({});
@@ -63,22 +63,14 @@ function App() {
       centerOnCursor: true,
       highlightItem: 0,
       items
-      // items: [
-      //   { id: 1, parents: [], title: "Donald", description: "Grand Father", isActive: false, image: photos.male },
-      //   { id: 2, parents: [1], title: "Ada", description: "Mother", isActive: false, image: photos.male },
-      //   { id: 3, parents: [], title: "Alan", description: "Father", isActive: false, image: photos.female },
-      //   { id: 4, parents: [2, 3], title: "Tim", description: "Brother", isActive: false, image: photos.male },
-      //   { id: 5, parents: [2, 3], title: "Grace", description: "Sister", isActive: false, image: photos.female },
-      //   { id: 6, parents: [2, 3], title: "You", description: "You", isActive: false, image: photos.unknown, itemTitleColor: "#ffd11a" },
-      // ]
     })
     setProcessing(false);
   }
 
   return (
     <div className='flex flex-col justify-center items-center py-5 space-y-8'>
-      <h1 className='text-2xl font-bold'>Family Diagram</h1>
-      <div className='flex items-center justify-center space-x-3'>
+      <h1 className='text-4xl font-bold'>Family Diagram</h1>
+      <div className='flex flex-col items-center justify-center space-y-3'>
         <textarea value={description} onChange={e => setDescription(e.target.value)} className='border-2 outline-none rounded-lg border-gray-200 hover:border-black p-4' type="text" placeholder="Enter family description" cols="60" rows="4" />
         <button onClick={handler} className='px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 hover:text-white'>Form Tree</button>
       </div>
