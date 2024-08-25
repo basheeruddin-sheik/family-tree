@@ -21,7 +21,7 @@ function App() {
 
   const handler = async () => {
     setProcessing(true);
-    const res = await fetch('http://localhost:4000/llm', {
+    const res = await fetch('http://localhost:8000/family-tree/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
