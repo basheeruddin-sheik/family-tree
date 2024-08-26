@@ -3,6 +3,10 @@
 This application leverages advanced large language model(LLM) to transform user-provided descriptions of family relationships into visually appealing interactive family trees.
 
 
+<img width="734" alt="Screenshot 2024-08-26 at 10 44 06 AM" src="https://github.com/user-attachments/assets/46d9f7b0-ed2e-429e-a084-ab8e9c32d231">
+
+
+
 ## Technologies
 * Backend: NestJS
 * Frontend: React
@@ -30,7 +34,7 @@ This application leverages advanced large language model(LLM) to transform user-
         ```
         cp .env.example .env
         ``` 
-    4. Run Service
+    4. Run Service - It will run on http://localhost:8000
         ```
         npm run start:dev
         ```
@@ -44,7 +48,7 @@ This application leverages advanced large language model(LLM) to transform user-
         ```
         npm install
         ```
-    3. Run Service
+    3. Run Service - It will run on http://localhost:3000
         ```
         npm start
         ```
@@ -56,6 +60,7 @@ This application leverages advanced large language model(LLM) to transform user-
         // Response Format
         {
             message: string;
+            isValidFamilyDescription: boolean;
             tree: {
                 node: string;
                 parents: string[];
