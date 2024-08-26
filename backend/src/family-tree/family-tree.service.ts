@@ -18,6 +18,7 @@ export class FamilyTreeService {
 
         const ResearchPaperExtraction = z.object({
             message: z.string(),
+            isValidFamilyDescription: z.boolean(),
             tree: z.array(z.object({
                 node: z.string(),
                 parents: z.array(z.string()),
